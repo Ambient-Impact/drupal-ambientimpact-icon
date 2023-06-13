@@ -11,6 +11,7 @@
     }
   ],
   "require": {
+    "drupal/ambientimpact_core": "1.x-dev@dev",
     "drupal/hook_event_dispatcher": "^2.0 || ^3.0"
   }
 }
