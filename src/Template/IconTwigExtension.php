@@ -4,6 +4,8 @@ namespace Drupal\ambientimpact_icon\Template;
 
 use Drupal\Component\Utility\NestedArray;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
 /**
  * ambientimpact_icon Twig extension.
@@ -11,9 +13,9 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * @see https://drupal.stackexchange.com/a/271772
  *   This class is based on this Stack Exchange answer.
  *
- * @see https://twig.symfony.com/doc/1.x/advanced.html
+ * @see https://twig.symfony.com/doc/3.x/advanced.html
  */
-class IconTwigExtension extends \Twig_Extension {
+class IconTwigExtension extends AbstractExtension {
   /**
    * The Drupal renderer service.
    *
@@ -42,7 +44,7 @@ class IconTwigExtension extends \Twig_Extension {
    */
   public function getFunctions() {
     return [
-      new \Twig_SimpleFunction(
+      new TwigFunction(
         'ambientimpact_icon',
         [$this, 'renderIcon'],
         ['is_safe' => ['html']]

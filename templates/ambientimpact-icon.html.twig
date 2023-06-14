@@ -19,9 +19,9 @@
  * @ingroup themeable
  */
 #}
-{% filter spaceless %}
+{% apply spaceless %}
   <{{ containerTag }}{{ containerAttributes }}>
     <svg{{ iconAttributes }}><use{{ useAttributes }}></use></svg>
     <span{{ textAttributes }}>{{ text }}</span>
   </{{ containerTag }}>
-{% endfilter %}
+{% endapply %}

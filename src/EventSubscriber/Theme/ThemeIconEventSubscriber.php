@@ -4,8 +4,8 @@ namespace Drupal\ambientimpact_icon\EventSubscriber\Theme;
 
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\ambientimpact_core\ComponentPluginManagerInterface;
-use Drupal\hook_event_dispatcher\HookEventDispatcherInterface;
 use Drupal\core_event_dispatcher\Event\Theme\ThemeEvent;
+use Drupal\core_event_dispatcher\ThemeHookEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -48,7 +48,7 @@ class ThemeIconEventSubscriber implements EventSubscriberInterface {
    */
   public static function getSubscribedEvents() {
     return [
-      HookEventDispatcherInterface::THEME => 'theme',
+      ThemeHookEvents::THEME => 'theme',
     ];
   }
 
