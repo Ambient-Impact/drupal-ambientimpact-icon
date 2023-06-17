@@ -3,6 +3,10 @@
   "description": "Ambient.Impact - Icons",
   "type": "drupal-custom-module",
   "license": "GPL-2.0-or-later",
+  "support": {
+    "docs": "https://github.com/Ambient-Impact/drupal-ambientimpact-icon",
+    "source": "https://github.com/Ambient-Impact/drupal-ambientimpact-icon"
+  },
   "authors": [
     {
       "name": "Ambient.Impact",
