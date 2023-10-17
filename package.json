@@ -4,11 +4,11 @@
   "license": "GPL-2.0-or-later",
   "repository": "github:Ambient-Impact/drupal-ambientimpact-icon",
   "scripts": {
-    "build": "webpack --progress --config webpack.config.js"
+    "build": "webpack --progress --config webpack.config.mjs"
   },
   "yarn.build": {
     "input": [
-      "webpack.config.js",
+      "webpack.config.mjs",
       "**/components/**/*.scss",
       "**/icons/*/*.svg"
     ],
