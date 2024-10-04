@@ -10,6 +10,7 @@ use Drupal\Core\Render\RendererInterface;
 use Drupal\Core\StringTranslation\TranslationInterface;
 use Drupal\ambientimpact_core\ComponentBase;
 use Drupal\ambientimpact_icon\IconBundlePluginManager;
+use function method_exists;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -148,9 +149,6 @@ class Icon extends ComponentBase {
 
 	/**
 	 * {@inheritdoc}
-	 *
-	 * @see https://api.drupal.org/api/drupal/core%21lib%21Drupal%21Core%21Render%21Renderer.php/function/Renderer%3A%3ArenderPlain
-	 *   Renders the template without attaching assets or cache metadata.
 	 */
 	public function getJSSettings(): array {
 		$config		= $this->configuration;
@@ -172,10 +170,29 @@ class Icon extends ComponentBase {
 			'#text'					=> 'textPlaceholder',
 		];
 
-		// Render the template without attaching assets or cache metadata.
-		$jsSettings['template'] = $this->renderer->renderPlain(
-			$templateRenderArray
-		);
+    // Render the template without attaching assets or cache metadata.
+    if (method_exists($this->renderer, 'renderInIsolation')) {
+
+      // Drupal >= 10.3
+      //
+      // @see https://www.drupal.org/node/3407994
+      //   Change record deprecating RendererInterface::renderPlain() in
+      //   favour of RendererInterface::renderInIsolation().
+      $jsSettings['template'] = $this->renderer->renderInIsolation(
+        $templateRenderArray,
+      );
+
+    } else {
+
+      // Drupal < 10.3
+      //
+      // @todo Remove when minimum core is increased to 10.3 or higher.
+      /** @phpstan-ignore-next-line */
+      $jsSettings['template'] = $this->renderer->renderPlain(
+        $templateRenderArray,
+      );
+
+    }
 
 		// Output bundle URLs and their used state.
 		foreach (

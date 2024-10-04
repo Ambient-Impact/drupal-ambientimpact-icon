@@ -1,0 +1,12 @@
+<?php
+
+declare(strict_types=1);
+
+/**
+ * Invalidate the Twig template cache for Twig 3.x deprecation fixes.
+ */
+function ambientimpact_icon_update_10201(): void {
+
+  \Drupal::service('twig')->invalidate();
+
+}

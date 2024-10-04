@@ -3,10 +3,13 @@
  * @file
  * Default theme implementation for an 'ambientimpact_icon' #type.
  *
- * Note that the 'spaceless' filter is used to ensure no white-space is output
- * between the icon elements as the icon can be displayed inline in a passage of
- * text, in which case extra white-space would cause extra visual spaces where
- * none is wanted, e.g. right next to some punctuation.
+ * Note that all white-space is removed to ensure no extra inline space is
+ * displayed between the elements as the icon can be displayed inline in a
+ * passage of text, in which case extra white-space would cause extra visual
+ * spaces where none is wanted - e.g. right next to some punctuation. Note that
+ * we have to combine {%- if true -%} with some strategically placed comments to
+ * ensure all possible new lines and space are removed. The spaceless filter is
+ * deprecated as of Twig 3.12 so cannot be relied on going forward.
  *
  * Available variables:
  * - containerTag: The container HTML tag.
@@ -17,11 +20,16 @@
  * - textAttributes: Attributes object for the icon text element.
  *
  * @ingroup themeable
+ *
+ * @see https://twig.symfony.com/doc/3.x/templates.html#templates-whitespace-control
+ *
+ * @see https://twig.symfony.com/doc/3.x/filters/spaceless.html
+ *   Deprecation listed here.
  */
 #}
-{% apply spaceless %}
-  <{{ containerTag }}{{ containerAttributes }}>
-    <svg{{ iconAttributes }}><use{{ useAttributes }}></use></svg>
-    <span{{ textAttributes }}>{{ text }}</span>
-  </{{ containerTag }}>
-{% endapply %}
+{%- if true -%}
+<{{ containerTag }}{{ containerAttributes }}>{#
+  #}<svg{{ iconAttributes }}><use{{ useAttributes }}></use></svg>{#
+  #}<span{{ textAttributes }}>{{ text }}</span>{#
+#}</{{ containerTag }}>
+{%- endif -%}
