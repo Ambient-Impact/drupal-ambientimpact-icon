@@ -2,16 +2,15 @@
 
 namespace Drupal\ambientimpact_icon\Element;
 
-// @todo Remove when minimum Drupal core is 10.3 or higher. Same with the
-//   PHPStan ignore tag lower down.
-if (\class_exists('Drupal\Core\Render\Element\RenderElementBase')) {
+// @todo Remove when minimum Drupal core is 10.3 or higher.
+if (!\class_exists('Drupal\Core\Render\Element\RenderElementBase')) {
   \class_alias(
-    'Drupal\Core\Render\Element\RenderElementBase',
     'Drupal\Core\Render\Element\RenderElement',
+    'Drupal\Core\Render\Element\RenderElementBase',
   );
 }
 
-use Drupal\Core\Render\Element\RenderElement;
+use Drupal\Core\Render\Element\RenderElementBase;
 use Drupal\Core\Template\Attribute;
 use Drupal\Core\Url;
 
@@ -20,8 +19,7 @@ use Drupal\Core\Url;
  *
  * @RenderElement("ambientimpact_icon")
  */
-/** @phpstan-ignore-next-line */
-class Icon extends RenderElement {
+class Icon extends RenderElementBase {
   /**
    * {@inheritdoc}
    */
