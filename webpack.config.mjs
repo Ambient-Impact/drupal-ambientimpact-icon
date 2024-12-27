@@ -32,13 +32,16 @@ const outputToSourcePaths = true;
  * Get globbed entry points.
  *
  * This uses the 'glob' package to automagically build the array of entry
- * points, as there are a lot of them spread out over many components.
+ * points based on the provided file pattern.
+ *
+ * @param String filePattern
+ *   A glob file pattern, relative to the current package path.
  *
  * @return {Object.<string, string>}
  *
  * @see https://www.npmjs.com/package/glob
  */
-function getGlobbedEntries() {
+function getGlobbedEntries(filePattern) {
 
   /**
    * Entries to be returned.
@@ -50,9 +53,11 @@ function getGlobbedEntries() {
    */
   let entries = {};
 
-  const results = glob.sync(
-    `./!(${distPath})/**/!(_)*.scss`,
-  );
+  const results = glob.sync(`./${filePattern}`, {
+    ignore: [
+      `./${distPath}/**`,
+    ],
+  });
 
   for (const result of results) {
 
@@ -134,7 +139,7 @@ Encore.setOutputPath(path.resolve(
   assets: '[file][query]',
 
 })
-.addEntries(getGlobbedEntries())
+.addEntries(getGlobbedEntries('/**/!(_)*.scss'))
 
 // Clean out any previously built files in case of source files being removed or
 // renamed.
