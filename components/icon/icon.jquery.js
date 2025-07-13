@@ -23,6 +23,20 @@ AmbientImpact.addComponent('icon.jquery', function(aiIconjQuery, $) {
       return this.each(function() {
         var $this = $(this);
 
+        const $existingIcon = $this.contents().filter(
+          `.ambientimpact-icon--name-${iconName}`,
+        );
+
+        // Avoid wrapping if the icon is already present. This is primarily
+        // intended as a workaround for RefreshLess caching plus async FastDom
+        // resulting in detaching not always kicking in before RefreshLess
+        // caches.
+        //
+        // @todo What about other icon names?
+        if ($existingIcon.length > 0) {
+          return this;
+        }
+
         $this.append(aiIconGet.get(
           iconName,
           $.extend(true, {}, settings, {
