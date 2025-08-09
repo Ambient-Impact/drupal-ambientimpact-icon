@@ -9,3 +9,4 @@ component.icon:
     icon.jquery.js: {}
   dependencies:
     - ambientimpact_core/component.jquery
+    - core/once

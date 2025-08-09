@@ -2,8 +2,17 @@
 //   Ambient.Impact - Icons - Icon loading component
 // -----------------------------------------------------------------------------
 
-AmbientImpact.addComponent('icon.load', function(aiIconLoad, $) {
+AmbientImpact.onGlobals(['once'], function() {
+AmbientImpact.addComponent('icon.load', (component, $) => {
+
   'use strict';
+
+  /**
+   * Event namespace name.
+   *
+   * @type {String}
+   */
+  const eventNamespace = 'ambientimpact-icon-load';
 
   /**
    * An object of bundle states, keyed by bundle name.
@@ -26,7 +35,7 @@ AmbientImpact.addComponent('icon.load', function(aiIconLoad, $) {
   var bundleSettings  = AmbientImpact.getComponentSettings('icon').bundles;
 
   // Expose bundle states.
-  this.bundleStates = bundleStates;
+  component.bundleStates = bundleStates;
 
   // Build default bundle state keys and values.
   $.each(bundleSettings, function(bundleName, bundleData) {
@@ -94,7 +103,7 @@ AmbientImpact.addComponent('icon.load', function(aiIconLoad, $) {
   }
 
   // Expose loadBundle() as a method.
-  this.loadBundle = loadBundle;
+  component.loadBundle = loadBundle;
 
   // Load any bundles that have been marked by the back end as being used on
   // the page via theme_ambientimpact_icon().
@@ -118,7 +127,7 @@ AmbientImpact.addComponent('icon.load', function(aiIconLoad, $) {
    *   The bundle name whose icons we need to mark as loading.
    */
   function markIconsLoading(context, bundleName) {
-    var containerBaseClass = aiIconLoad.settings.containerBaseClass;
+    var containerBaseClass = component.settings.containerBaseClass;
 
     $(context).find(
       '.' + containerBaseClass +
@@ -137,7 +146,7 @@ AmbientImpact.addComponent('icon.load', function(aiIconLoad, $) {
    *   The bundle name whose icons we need to mark as loaded.
    */
   function markIconsLoaded(context, bundleName) {
-    var containerBaseClass = aiIconLoad.settings.containerBaseClass;
+    var containerBaseClass = component.settings.containerBaseClass;
 
     $(context).find(
       '.' + containerBaseClass +
@@ -153,32 +162,78 @@ AmbientImpact.addComponent('icon.load', function(aiIconLoad, $) {
   };
 
   // When each bundle is loading, mark all its icons on the page as such.
-  $(document).on('IconBundleLoading.aiIcon', function(event, bundleName) {
+  $(document).on(`IconBundleLoading.${eventNamespace}`, (event, bundleName) => {
     markIconsLoading(document.body, bundleName);
   });
 
   // When each bundle is loaded, mark all its icons on the page as such.
-  $(document).on('IconBundleLoaded.aiIcon', function(event, bundleName) {
+  $(document).on(`IconBundleLoaded.${eventNamespace}`, (event, bundleName) => {
     markIconsLoaded(document.body, bundleName);
   });
 
+  /**
+   * Mark the current states of all icons found in the provided context.
+   *
+   * @param {HTMLElement} context
+   *   The context to search for icons within.
+   */
+  const markCurrentStates = (context) => {
+
+    $.each(bundleStates, (bundleName, bundleState) => {
+
+      if (bundleState.loaded === true) {
+
+        markIconsLoaded(context, bundleName);
+
+      } else if (bundleState.loading === true) {
+
+        markIconsLoading(context, bundleName);
+
+      }
+
+    });
+
+  };
+
   // Define a Drupal behaviour to mark icons as loaded or loading. This is
   // necessary so that icons are properly marked as loaded when inserted via
-  // Drupal's Ajax framework.
-  this.addBehaviour(
+  // Drupal's Ajax framework, RefreshLess, etc.
+  component.addBehaviour(
     'AmbientImpactIconLoad',
     'ambientimpact-icon-load',
     function(context, settings) {
-      $.each(bundleStates, function(bundleName, bundleState) {
-        if (bundleState.loaded === true) {
-          markIconsLoaded(context, bundleName);
-        } else if (bundleState.loading === true) {
-          markIconsLoading(context, bundleName);
-        }
-      });
+
+      markCurrentStates(context);
+
     },
     function(context, settings, trigger) {
       // Do we need a detach?
     }
   );
+
+  // Mark all icons in a RefreshLess preview with their current (usually loaded)
+  // states so that standalone icons are instantly displayed as standalone when
+  // the preview is rendered to prevent the non-loaded text displaying if
+  // there's any delay from the network response.
+  $(once(
+    'ambientimpact-icon-load-refreshless-preview',
+    'html',
+  )).on(`refreshless:before-render.${eventNamespace}`, async (event) => {
+
+    // We only care about previews.
+    if (event.detail.isPreview === false) {
+      return;
+    }
+
+    await event.detail.delay((resolve, reject) => {
+
+      markCurrentStates(event.detail.newBody);
+
+      resolve();
+
+    });
+
+  });
+
+});
 });

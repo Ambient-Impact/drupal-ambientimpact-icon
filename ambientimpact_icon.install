@@ -10,3 +10,12 @@ function ambientimpact_icon_update_10201(): void {
   \Drupal::service('twig')->invalidate();
 
 }
+
+/**
+ * Rebuild libraries for RefreshLess preview icon loaded marking support.
+ */
+function ambientimpact_icon_update_10202(): void {
+
+  \Drupal::service('library.discovery')->clearCachedDefinitions();
+
+}
