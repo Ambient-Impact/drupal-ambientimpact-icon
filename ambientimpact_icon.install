@@ -19,3 +19,12 @@ function ambientimpact_icon_update_10202(): void {
   \Drupal::service('library.discovery')->clearCachedDefinitions();
 
 }
+
+/**
+ * Reset asset query string for addition of Bluesky icon and MDN icon update.
+ */
+function ambientimpact_icon_update_10203(): void {
+
+  \Drupal::service('asset.query_string')->reset();
+
+}
