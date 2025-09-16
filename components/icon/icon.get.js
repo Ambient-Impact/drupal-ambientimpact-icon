@@ -14,7 +14,7 @@ AmbientImpact.addComponent('icon.get', function(aiIconGet, $) {
       containerBaseClass  = this.settings.containerBaseClass;
 
     // Return an empty collection if the icon name is not valid.
-    if ($.type(iconName) !== 'string' || iconName.length < 1) {
+    if (typeof iconName !== 'string' || iconName.length < 1) {
       return $icon;
     }
 
