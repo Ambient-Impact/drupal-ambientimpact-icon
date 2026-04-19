@@ -28,3 +28,12 @@ function ambientimpact_icon_update_10203(): void {
   \Drupal::service('asset.query_string')->reset();
 
 }
+
+/**
+ * Reset asset query string for addition of Codeberg icon.
+ */
+function ambientimpact_icon_update_10204(): void {
+
+  \Drupal::service('asset.query_string')->reset();
+
+}
