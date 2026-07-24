@@ -6,7 +6,7 @@ licensed under the [Drupal trademark and logo
 policy](https://www.drupal.com/trademark), provided that its use falls under the
 "automatic license" criteria; i.e. it promotes Drupal.
 
-# Bluesky, Codeberg, Discord, Facebook, GitHub, Instagram, Ko-fi, Liberapay, Mastodon, MDN, Pinterest, Steam, Tumblr, Twitter, and Wikipedia icons
+# Bluesky, Codeberg, Discord, Facebook, Forgejo, GitHub, Instagram, Ko-fi, Liberapay, Mastodon, MDN, Pinterest, Steam, Tumblr, Twitter, and Wikipedia icons
 
 These are from [Simple Icons](https://simpleicons.org) and
 are licensed under [Creative Commons Zero v1.0

@@ -46,3 +46,12 @@ function ambientimpact_icon_update_10205(): void {
   \Drupal::service('asset.query_string')->reset();
 
 }
+
+/**
+ * Reset asset query string for addition of Forgejo icon.
+ */
+function ambientimpact_icon_update_10206(): void {
+
+  \Drupal::service('asset.query_string')->reset();
+
+}
